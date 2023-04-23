@@ -21,13 +21,13 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-Route::middleware('auth:api')->apiResource('rooms', RoomController::class);
+// Route::middleware('auth:api')->apiResource('rooms', RoomController::class);
 // Route::middleware('auth:api')->apiResource('devices', DeviceController::class);
 // Route::middleware('auth:api')->apiResource('sensors', SensorController::class);
 // Route::middleware('auth:api')->apiResource('data_entry', DataEntryController::class);
 
 // without authentification
-// Route::apiResource('rooms', RoomController::class);
+Route::apiResource('rooms', RoomController::class);
 Route::apiResource('devices', DeviceController::class);
 Route::apiResource('sensors', SensorController::class);
 Route::apiResource('data_entry', DataEntryController::class);

@@ -163,7 +163,7 @@ class SensorController extends Controller
         try {
             $sensor = Sensor::findOrFail($id);
             $sensor->delete();
-            return response()->json(['message' => 'Sensor deleted successfully'], 204);
+            return response()->json(['message' => 'Sensor deleted successfully'], 200);
         } catch (\Throwable $th) {
             return response()->json(['message' => 'Failed to delete sensor'], 500);
         }

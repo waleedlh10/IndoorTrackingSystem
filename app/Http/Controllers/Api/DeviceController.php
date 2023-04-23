@@ -136,7 +136,7 @@ class DeviceController extends Controller
     {
         $device = Device::find($id);
         if (!$device) {
-            return response()->json(['message' => 'Room not found'], 404);
+            return response()->json(['message' => 'Device not found'], 404);
         }
         return response()->json($device);
     }

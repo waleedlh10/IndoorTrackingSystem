@@ -197,7 +197,7 @@ class RoomController extends Controller
         try {
             $room = Room::findOrFail($id);
             $room->delete();
-            return response()->json(['message' => 'Room deleted successfully'], 204);
+            return response()->json(['message' => 'Room deleted successfully'], 200);
         } catch (\Throwable $th) {
             return response()->json(['message' => 'Failed to delete room'], 500);
         }
