@@ -18,7 +18,6 @@ class UserController extends Controller
         ]);
     }
 
-
     public function store(Request $request)
     {
         try {
@@ -54,9 +53,9 @@ class UserController extends Controller
     {
         $user = User::find($id);
         if (!$user) {
-            return response()->json(['message' => 'User not found'], 500);
+            return response()->json(['message' => 'User not found'], 404);
         }
-        return response()->json([compact("user")]);
+        return response()->json(['message' => 'User found successfully' ,"user" => $user] ,200 );
     }
 
     /**
@@ -73,6 +72,9 @@ class UserController extends Controller
             ]);
 
             $user = User::find($id);
+            if(!$user){
+                return response()->json(['message' => 'User not found' ], 404);
+            }
             $user->update($validatedData);
 
             // Return a response indicating success
@@ -81,7 +83,7 @@ class UserController extends Controller
                 'user_id' => $user->id 
             ], 201);            
         } catch (\Exception $e) {
-            return response()->json(['message' => 'Failed to update user' ,"message" => $e->getMessage()], 500);
+            return response()->json(['message' => 'Failed to update user' ,"error" => $e->getMessage()], 500);
         }
     }
 
@@ -92,8 +94,11 @@ class UserController extends Controller
     {
         try {
             $user = User::find($id);
+            if(!$user){
+                return response()->json(['message' => 'User not found' ], 404);
+            }
             $user->delete();
-            return response()->json(['message' => 'user deleted successfully'], 200);
+            return response()->json(['message' => 'User deleted successfully'], 200);
         } catch (\Throwable $th) {
             return response()->json(['message' => 'Failed to delete user'], 500);
         }

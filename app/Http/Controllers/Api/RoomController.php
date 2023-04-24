@@ -124,7 +124,7 @@ class RoomController extends Controller
 
         $rooms = $rooms->get();
     
-        return response()->json(['rooms' => $rooms ]);
+        return response()->json(["message" => "The search is complete" ,'rooms' => $rooms ]);
     }
 
     /**
@@ -158,8 +158,8 @@ class RoomController extends Controller
         if (!$room) {
             return response()->json(['message' => 'Room not found'], 404);
         }
+        return response()->json(['message' => 'Room found successfully' ,'room' => $room] ,200 );
 
-        return response()->json($room, 200);
     }
 
     /**
@@ -196,6 +196,9 @@ class RoomController extends Controller
     {
         try {
             $room = Room::findOrFail($id);
+            if (!$room) {
+                return response()->json(['message' => 'Room not found'], 404);
+            }
             $room->delete();
             return response()->json(['message' => 'Room deleted successfully'], 200);
         } catch (\Throwable $th) {

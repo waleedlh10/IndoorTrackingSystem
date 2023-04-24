@@ -93,7 +93,10 @@ class DataEntryController extends Controller
 
         try {
             $dataEntry = data_entry::create($validatedData);
-            return response()->json(['message' => 'Data registered successfully',compact('dataEntry')], 201);
+            if (!$dataEntry) {
+                return response()->json(['message' => 'Data not found'], 404);
+            }
+            return response()->json(['message' => 'Data registered successfully' ,'dataEntry' => $dataEntry], 201);
         } catch (\Exception $e) {
             return response()->json(['message' => 'Failed to register data'], 500);
         }
@@ -104,11 +107,11 @@ class DataEntryController extends Controller
      */
     public function show(string $id)
     {
-        $device = data_entry::find($id);
-        if (!$device) {
+        $dataEntry = data_entry::find($id);
+        if (!$dataEntry) {
             return response()->json(['message' => 'Data not found'], 404);
         }
-        return response()->json($device);
+        return response()->json(['message' => 'Data found successfully' ,'dataEntry' => $dataEntry] ,200 );
     }
 
     /**
@@ -123,8 +126,11 @@ class DataEntryController extends Controller
         ]);
 
         try {
+            if (!$dataEntry) {
+                return response()->json(['message' => 'Data not found'], 404);
+            }
             $dataEntry = $data_entry->update($validatedData);
-            return response()->json(['message' => 'Data updated successfully' ,compact('data_entry')], 201);
+            return response()->json(['message' => 'Data updated successfully' ,'data_entry' => $data_entry], 201);
         } catch (\Exception $e) {
             return response()->json(['message' => 'Failed to update data'], 500);
         }
@@ -136,36 +142,14 @@ class DataEntryController extends Controller
     public function destroy(data_entry $data_entry)
     {
         try {
+            if (!$data_entry) {
+                return response()->json(['message' => 'Data not found'], 404);
+            }
             $data_entry->delete();
-            return response()->json(['message' => 'Data deleted successfully',compact('data_entry')], 201);
+            return response()->json(['message' => 'Data deleted successfully','data_entry' => $data_entry], 201);
         } catch (\Exception $e) {
-            return response()->json(['message' => 'Failed to delete data'], 500);
+            return response()->json(['message' => 'Failed to delete data' ,'error' => $e->getMessage()], 500);
         }
     }
-
-    // public function softDelete( $id )
-    // {
-    //     $product = Product::find($id)->delete();
-    //     return redirect()->route("product.index")
-    //     ->with("success" ,"Product deleted successfully");
-    // }
-
-    // public function trashed()
-    // {
-    //     // $products = product::all()->paginate(4);
-    //     $products = product::withTrashed()->latest()->paginate(4);
-
-    //     return view("product.trashed" ,compact("products"));
-    // }
-
-    // public function restore($id)
-    // {
-    //     // $products = product::all()->paginate(4);
-    //     $p = product::onlyTrashed()->where('id' ,$id)->first()->restore();
-    //     $products = product::withTrashed()->latest()->paginate(4);
-
-    //     return view("product.trashed" ,compact("products"));
-    // }
-
 
 }

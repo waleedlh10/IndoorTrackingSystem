@@ -98,7 +98,7 @@ class SensorController extends Controller
         }
         
         $sensors = $sensors->get();
-        return response()->json(['sensors' => $sensors ]);
+        return response()->json(["message" => "The search is complete" ,'sensors' => $sensors ]);
     }
 
     /**
@@ -127,9 +127,9 @@ class SensorController extends Controller
     {
         $sensor = Sensor::find($id);
         if (!$sensor) {
-            return response()->json(['message' => 'Sensor not found'], 500);
+            return response()->json(['message' => 'Sensor not found'], 404);
         }
-        return response()->json($sensor);
+        return response()->json(['message' => 'Sensor found successfully' ,'sensor' => $sensor] ,200 );
     }
 
     /**
@@ -139,7 +139,7 @@ class SensorController extends Controller
     {
         $sensor = Sensor::find($id);
         if (!$sensor) {
-            return response()->json(['message' => 'Sensor not found'], 500);
+            return response()->json(['message' => 'Sensor not found'], 404);
         }
         $validatedData = $request->validate([
             'Name' => 'sometimes|required|string',
@@ -162,6 +162,9 @@ class SensorController extends Controller
     {
         try {
             $sensor = Sensor::findOrFail($id);
+            if(!$sensor){
+                return response()->json(['message' => 'Sensor not found'], 404);
+            }
             $sensor->delete();
             return response()->json(['message' => 'Sensor deleted successfully'], 200);
         } catch (\Throwable $th) {

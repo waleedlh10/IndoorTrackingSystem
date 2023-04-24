@@ -104,7 +104,7 @@ class DeviceController extends Controller
         }
 
         $devices = $devices->get();
-        return response()->json(['devices' => $devices ]);
+        return response()->json(["message" => "The search is complete" ,'devices' => $devices ]);
     }
 
     /**
@@ -138,7 +138,7 @@ class DeviceController extends Controller
         if (!$device) {
             return response()->json(['message' => 'Device not found'], 404);
         }
-        return response()->json($device);
+        return response()->json(['message' => 'Device found successfully' ,'device' => $device] ,200 );
     }
 
     /**
@@ -157,6 +157,11 @@ class DeviceController extends Controller
                 'room_id' => 'sometimes|exists:rooms,id'
             ]);
 
+
+            if (!$device) {
+                return response()->json(['message' => 'Device not found'], 404);
+            }
+
             $device->update($validatedData);
             return response()->json(['message' => 'Device updated successfully', 'device' => $device ], 201);
         } catch (\Exception $e) {
@@ -172,6 +177,9 @@ class DeviceController extends Controller
         try {
             //code...
             $device = Device::findOrFail($id);
+            if (!$device) {
+                return response()->json(['message' => 'Device not found'], 404);
+            }
             $device->delete();
             return response()->json(['message' => 'Device deleted successfully'], 200);
         } catch (\Throwable $th) {
