@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\DeviceController;
 use App\Http\Controllers\Api\RoomController;
 use App\Http\Controllers\Api\SensorController;
 use App\Http\Controllers\Api\DataEntryController;
+use App\Http\Controllers\Api\UserController;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -31,7 +32,7 @@ Route::apiResource('rooms', RoomController::class);
 Route::apiResource('devices', DeviceController::class);
 Route::apiResource('sensors', SensorController::class);
 Route::apiResource('data_entry', DataEntryController::class);
-Route::apiResource('user', App\Http\Controllers\Api\UserController::class);
+Route::apiResource('user', UserController::class);
 
 
 
